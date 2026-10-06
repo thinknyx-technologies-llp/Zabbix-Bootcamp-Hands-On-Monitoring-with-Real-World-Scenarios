@@ -1,0 +1,15 @@
+# Go to the Zabbix server
+# Open the Zabbix server configuration file
+vi /etc/zabbix/zabbix_server.conf
+
+# Search for:
+# StartReportWriters
+
+# Enable one report writer
+StartReportWriters=1
+
+# Restart the Zabbix server service
+systemctl restart zabbix-server.service
+
+# Verify that the Zabbix report writer process is running
+ps -ef | grep -i zabbix | grep -i report
