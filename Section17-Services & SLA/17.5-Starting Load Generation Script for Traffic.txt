@@ -1,0 +1,23 @@
+# Move into the Lucky Draw application directory
+cd luckydraw
+
+# Clone the Lucky Draw load generator from GitHub
+git clone https://github.com/luckydraw-app/load-generator.git
+
+# Move into the load generator directory
+cd load-generator
+
+# Install the Python dependencies required by the load generator
+pip3 install -r requirements.txt
+
+# Start the load generator in the background
+nohup python3 app.py > app.log 2>&1 &
+
+# Check whether the Python application is running
+ps -ef | grep -i python
+
+# Monitor the load generator application log
+tail -f app.log
+
+# Monitor the UI application log for participation requests
+tail -f ../UI/app.log | grep -i "POST /participate HTTP/1.1"

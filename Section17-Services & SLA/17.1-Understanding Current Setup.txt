@@ -1,0 +1,6 @@
+# Checking the status of PostgreSQL Service
+systemctl status PostgreSQL
+
+
+# Checking the status of Redis Service
+systemctl status redis

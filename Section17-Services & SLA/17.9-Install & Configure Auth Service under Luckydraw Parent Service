@@ -1,0 +1,75 @@
+# Edit the custom configuration file and add the login.request.failed key
+sudo vi /etc/zabbix/zabbix_agent2.d/luckydraw.conf
+
+# Define a custom UserParameter to count failed login requests
+UserParameter=login.request.failed,awk -v min="$(date '+%d/%b/%Y %H:%M')" '$0 ~ "\\[" min ":" && $0 ~ /POST \/login HTTP\/1\.1.*500/ {count++} END {print count+0}' /home/ubuntu/luckydraw/UI/app.log
+
+# Restart Zabbix Agent 2 after updating the configuration
+sudo systemctl restart zabbix-agent2
+
+# Test the login request failure key
+zabbix_agent2 -t login.request.failed
+
+
+
+# Navigate to the load generator directory
+cd ../load-generator
+
+# Start the admin login load generator in the background
+# Redirect output and errors to admin_login.log
+nohup python3 admin_login.py > admin_login.log 2>&1 &
+
+# Verify that the Python process is running
+ps -ef | grep -i python3
+
+# Monitor the admin login generator log
+tail -f admin_login.log
+
+# Monitor the UI application log
+tail -f ../UI/app.log
+
+# Go to admin_log.py and change the UI_URL port to 8080
+vi admin_login.py
+
+# Stop the existing admin login generator process
+kill <PID>
+
+# Restart the generator after correcting the target port configuration
+nohup python3 admin_login.py > admin_login.log 2>&1 &
+
+# Check the running Python processes
+ps -ef | grep -i python3
+
+# Monitor the admin login generator log
+tail -f admin_login.log
+
+# Clone the Auth service repository, including its submodules
+git clone https://github.com/luckydraw-app/auth-svc.git --recurse-submodules
+
+# Navigate to the Auth service directory
+cd auth-svc
+
+# Install the Auth service dependencies
+pip3 install -r requirements.txt
+
+# Start the Auth application on port 5003
+nohup python3 app.py --port 5003 > app.log 2>&1 &
+
+# Inspect the Auth application log after startup failure
+cat app.log
+
+# Inspect the Auth application source and configuration. The shifting of load_dotenv() is already done for you in the latest code
+cat app.py
+
+
+# Restart the Auth application after correcting app.py
+nohup python3 app.py --port 5003 > app.log 2>&1 &
+
+# Verify the running Python processes
+ps -ef | grep -i python3
+
+# Monitor the application logs
+tail -f app.log
+
+# Monitor the UI application log for successful responses
+tail -f ../UI/app.log

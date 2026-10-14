@@ -1,0 +1,35 @@
+# Create a directory for the Lucky Draw application
+mkdir luckydraw
+
+# Move into the application directory
+cd luckydraw
+
+# Install Python virtual environment, pip, and environment variable support
+sudo apt-get install -y python3-venv python3-pip python3-dotenv
+
+# Clone the Lucky Draw UI application from GitHub
+git clone https://github.com/luckydraw-app/UI.git
+
+# Create a Python virtual environment
+python3 -m venv venv
+
+# Activate the Python virtual environment
+source venv/bin/activate
+
+# Move into the cloned application directory
+cd UI
+
+# Install the Python dependencies required by the application
+pip3 install -r requirements.txt
+
+# Start the application in the background on port 8080
+# nohup keeps the application running after the terminal session ends
+# Output and errors are redirected to app.log
+nohup python3 app.py --port 8080 > app.log 2>&1 &
+
+# Check the application log to verify that the application started successfully
+cat app.log
+
+# Open the application in a web browser
+# Replace <public_ip> with the public IP address of the server
+http://<public_ip>:8080

@@ -1,0 +1,27 @@
+# Go inside the Lucky Draw directory
+cd luckydraw
+
+# Clone the Participate Service repository and its submodules
+git clone https://github.com/luckydraw-app/participate-svc.git --recurse-submodules
+
+# Move into the Participate Service directory
+cd participate-svc
+
+# Install the Python dependencies required by the application
+pip3 install -r requirements.txt
+
+# Monitor the UI application log
+tail -f ../UI/app.log
+
+# Start the Participate Service in the background on port 5001
+# Redirect standard output and error messages to app.log
+nohup python3 app.py --port 5001 > app.log 2>&1 &
+
+# Display the Participate Service application log
+cat app.log
+
+# Check whether the application process is running
+ps -ef | grep app.py
+
+# Monitor the UI application log
+tail -f ../UI/app.log

@@ -1,0 +1,47 @@
+# Open the Zabbix Agent 2 custom configuration file
+sudo vi /etc/zabbix/zabbix_agent2.d/luckydraw.conf
+
+# Define a custom UserParameter to count failed participation requests
+UserParameter=participate.request.failed,awk -v min="$(date '+%d/%b/%Y %H:%M')" '$0 ~ "\\[" min ":" && $0 ~ /POST \/participate HTTP\/1\.1.*500/ {count++} END {print count+0}' /home/ubuntu/luckydraw/UI/app.log
+
+# Restart Zabbix Agent 2 to load the new UserParameter
+sudo systemctl restart zabbix-agent2.service
+
+# Test the custom UserParameter
+sudo zabbix_agent2 -t participate.request.failed
+
+
+# Move into the UI application directory
+cd ../UI/
+
+# Add the zabbix user to the ubuntu group
+sudo usermod -aG ubuntu zabbix
+
+# Restart Zabbix Agent 2 to apply the group membership change
+sudo systemctl restart zabbix-agent2.service
+
+
+# Install ACL support
+sudo apt-get install -y acl
+
+# Grant the zabbix user read and execute permissions on the Lucky Draw directory
+setfacl -m u:zabbix:rx /home/ubuntu/luckydraw/
+
+# Grant the zabbix user read and execute permissions on the application log file
+setfacl -m u:zabbix:rx /home/ubuntu/luckydraw/UI/app.log
+
+# Display the ACL permissions for the Lucky Draw directory
+getfacl /home/ubuntu/luckydraw/
+
+# Display the ACL permissions for the application log file
+getfacl /home/ubuntu/luckydraw/UI/app.log
+
+
+# Test whether the zabbix user can read the application log
+sudo -u zabbix cat /home/ubuntu/luckydraw/UI/app.log
+
+# Restart Zabbix Agent 2
+sudo systemctl restart zabbix-agent2.service
+
+# Monitor the application log for participation requests
+tail -f app.log | grep -i "POST /participate HTTP/1.1"
