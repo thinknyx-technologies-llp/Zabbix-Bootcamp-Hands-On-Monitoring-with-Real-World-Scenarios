@@ -1,0 +1,11 @@
+# Check whether Zabbix discovery processes are running
+ps -ef | grep -i 'zabbix_server' | grep -i 'discovery'
+
+# Open the Zabbix Server configuration file
+vi /etc/zabbix/zabbix_server.conf
+
+# Set the number of discovery worker processes to 7
+StartDiscoverers=7
+
+# Restart Zabbix Server to apply the configuration change
+systemctl restart zabbix-server.service

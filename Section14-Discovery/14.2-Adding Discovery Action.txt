@@ -1,0 +1,30 @@
+
+# On Zabbix Server
+
+# Install the Zabbix command-line utility for testing agent connectivity
+apt-get install -y zabbix-get
+
+# Display the available zabbix_get options
+zabbix_get --help
+
+# Test connectivity to the Zabbix Host and retrieve its system information
+zabbix_get -s <host_public_ip> -k system.uname
+
+
+# On Zabbix Host
+
+# Open the Zabbix Agent 2 configuration file
+vi /etc/zabbix/zabbix_agent2.conf
+
+# Configure the IP address of the Zabbix Server
+# Set the Server parameter to the Zabbix Server IP
+# Server = <zabbix_server_ip>
+
+# Restart Zabbix Agent 2 to apply the configuration changes
+sudo systemctl restart zabbix-agent2.service
+
+
+# On Zabbix Server
+
+# Verify agent connectivity by retrieving system information again
+zabbix_get -s <host_public_ip> -k system.uname

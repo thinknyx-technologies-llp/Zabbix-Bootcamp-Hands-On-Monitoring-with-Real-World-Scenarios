@@ -1,0 +1,43 @@
+# ==========================================
+# MACHINE 1 - Zabbix Agent
+# ==========================================
+
+# Identify the operating system and version
+cat /etc/os-release
+
+# Install Zabbix Agent based on the identified OS and version
+
+# Open the Zabbix Agent configuration file
+vi /etc/zabbix/zabbix_agentd.conf
+
+# Configure the Zabbix Server's private IP address
+# Server=<zabbix_private_ip>
+
+# Restart the Zabbix Agent service
+systemctl restart zabbix-agent.service
+
+
+# ==========================================
+# MACHINE 2 - Zabbix Agent 2
+# ==========================================
+
+# Identify the operating system and version
+cat /etc/os-release
+
+# Install Zabbix Agent 2 based on the identified OS and version
+
+# Open the Zabbix Agent 2 configuration file
+vi /etc/zabbix/zabbix_agent2.conf
+
+# Configure the Zabbix Server's private IP address
+# Server=<zabbix_private_ip>
+
+# Restart the Zabbix Agent 2 service
+systemctl restart zabbix-agent2.service
+
+# ==========================================
+# Zabbix Server
+# ==========================================
+
+# Test connectivity to the Zabbix Host and retrieve its system information
+zabbix_get -s <host_public_ip> -k system.uname
