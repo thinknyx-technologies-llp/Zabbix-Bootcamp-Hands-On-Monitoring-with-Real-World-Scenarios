@@ -1,0 +1,8 @@
+# Stop the Zabbix Agent service
+systemctl stop zabbix-agent
+
+# Check the status of the Zabbix Agent service
+systemctl status zabbix-agent
+
+# Start the Zabbix Agent service
+systemctl start zabbix-agent
