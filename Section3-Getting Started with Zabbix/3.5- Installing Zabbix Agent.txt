@@ -1,0 +1,5 @@
+# Install the Zabbix Agent
+apt-get install -y zabbix-agent
+
+# Check the status of the Zabbix Agent service
+systemctl status zabbix-agent

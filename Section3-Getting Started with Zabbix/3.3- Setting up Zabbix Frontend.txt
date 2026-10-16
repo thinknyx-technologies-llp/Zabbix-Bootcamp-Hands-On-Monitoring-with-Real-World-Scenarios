@@ -1,0 +1,5 @@
+# Check the status of the Apache web server
+systemctl status apache2
+
+# Restart Apache to apply configuration changes
+systemctl restart apache2

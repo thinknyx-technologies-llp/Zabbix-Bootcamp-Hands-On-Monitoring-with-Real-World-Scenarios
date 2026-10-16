@@ -1,0 +1,49 @@
+# Open the Zabbix download page for Ubuntu 22.04 with PostgreSQL and Apache
+# https://www.zabbix.com/download?zabbix=7.4&os_distribution=ubuntu&os_version=22.04&components=server_frontend_agent&db=pgsql&ws=apache
+
+# Update the package lists
+apt-get update
+
+# Install PostgreSQL and additional PostgreSQL utilities
+apt-get install -y postgresql postgresql-contrib
+
+# Check the status of the PostgreSQL service
+systemctl status postgresql
+
+# Enable PostgreSQL to start automatically at system boot
+systemctl enable postgresql
+
+
+# Download the Zabbix 7.4 repository package for Ubuntu 22.04
+wget https://repo.zabbix.com/zabbix/7.4/release/ubuntu/pool/main/z/zabbix-release/zabbix-release_latest_7.4+ubuntu22.04_all.deb
+
+# Install the Zabbix repository package
+dpkg -i zabbix-release_latest_7.4+ubuntu22.04_all.deb
+
+# Update the package lists
+apt update
+
+# Install the Zabbix server for PostgreSQL, PHP frontend, Apache configuration,
+# and database schema scripts
+apt install zabbix-server-pgsql zabbix-frontend-php php8.1-pgsql zabbix-apache-conf zabbix-sql-scripts
+
+# Create the Zabbix database user and enter a password when prompted
+sudo -u postgres createuser --pwprompt Zabbix
+
+# Create the Zabbix database and assign ownership to the zabbix user
+sudo -u postgres createdb -O zabbix Zabbix
+
+# Import the Zabbix server database schema into PostgreSQL
+zcat /usr/share/zabbix/sql-scripts/postgresql/server.sql.gz | sudo -u zabbix psql Zabbix
+
+# Open the Zabbix server configuration file
+vi /etc/zabbix/zabbix_server.conf
+
+# Configure the password for the Zabbix database user
+DBPassword=zabbix
+
+# Restart the Zabbix server to apply the configuration changes
+systemctl restart zabbix-server
+
+# Check the status of the Zabbix server service
+systemctl status zabbix-server
