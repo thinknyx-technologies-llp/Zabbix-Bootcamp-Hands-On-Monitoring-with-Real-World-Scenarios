@@ -1,0 +1,20 @@
+# Install Zabbix Agent 2
+sudo apt-get install -y zabbix-agent2
+
+# Check the status of the Zabbix Agent 2 service
+systemctl status zabbix-agent2.service
+
+# Open the Zabbix Agent 2 configuration file
+sudo vi /etc/zabbix/zabbix_agent2.conf
+
+# Configure the Zabbix server IP address for active checks
+ServerActive=<zabbix_ip_address>
+
+# Set the hostname to match the host configured in the Zabbix frontend
+Hostname=Zabbix Host Active Checks - Linux
+
+# Restart Zabbix Agent 2 to apply the configuration changes
+sudo systemctl restart zabbix-agent2.service
+
+# Monitor the Zabbix Agent 2 log for activity and errors
+sudo tail -f /var/log/zabbix/zabbix_agent2.log

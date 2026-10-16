@@ -1,0 +1,17 @@
+# Download the Zabbix Agent for Windows
+https://www.zabbix.com/download_agents
+
+# Open the Zabbix Agent configuration file
+zabbix_agentd.conf
+
+# Configure the Zabbix server IP address for active checks
+ServerActive=<Zabbix_ip>
+
+# Set the hostname to match the host configured in the Zabbix frontend
+Hostname=Windows-Zabbix-Thinknyx-Laptop
+
+# Set the host metadata (this should match the metadata configured in Zabbix)
+HostMetadata=Zabbix agent on Windows
+
+# Restart the Zabbix Agent Service
+# Open Windows Services, find Zabbix Agent, right-click, and select Restart
