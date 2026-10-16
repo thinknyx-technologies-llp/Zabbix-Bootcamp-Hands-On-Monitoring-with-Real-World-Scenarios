@@ -1,0 +1,20 @@
+# Open the Zabbix download page for Ubuntu 22.04 and Zabbix Agent 2
+# https://www.zabbix.com/download?zabbix=7.4&os_distribution=ubuntu&os_version=22.04&components=agent_2&db=&ws=
+
+# Download the Zabbix 7.4 repository package for Ubuntu 22.04
+wget https://repo.zabbix.com/zabbix/7.4/release/ubuntu/pool/main/z/zabbix-release/zabbix-release_latest_7.4+ubuntu22.04_all.deb
+
+# Install the Zabbix repository package
+dpkg -i zabbix-release_latest_7.4+ubuntu22.04_all.deb
+
+# Update the package lists
+apt update
+
+# Install Zabbix Agent 2
+apt install zabbix-agent2 -y
+
+# Check the status of the Zabbix Agent 2 service
+systemctl status zabbix-agent2.service
+
+# Enable Zabbix Agent 2 to start automatically at system boot
+systemctl enable zabbix-agent2.service
