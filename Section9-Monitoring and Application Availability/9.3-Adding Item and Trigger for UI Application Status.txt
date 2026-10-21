@@ -1,0 +1,23 @@
+# Check the HTTP status code returned by the application on port 5000
+curl -s -o /dev/null -w "%{http_code}" http://localhost:5000/
+
+# Open the custom Zabbix Agent 2 configuration file
+vi /etc/zabbix/zabbix_agent2.d/luckydraw.conf
+
+# Define a custom UserParameter to monitor the application's HTTP status
+UserParameter=ui.status,curl -s -o /dev/null -w "%{http_code}" http://localhost:5000/
+
+# Restart Zabbix Agent 2 to load the new UserParameter
+systemctl restart zabbix-agent2.service
+
+# Test the custom UI status monitoring item
+zabbix_agent2 -t ui.status
+
+# Find Python 3 processes running on the server
+ps -ef | grep -i python3
+
+# Forcefully terminate the specified Python process
+kill -9 <python_pid>
+
+# Start the Python application in the background
+nohup python3 app.py &

@@ -1,0 +1,14 @@
+# Update the package lists
+apt-get update
+
+# Install the Redis server
+apt-get install -y redis-server
+
+# Check the status of the Redis server service
+systemctl status redis-server.service
+
+# Enable Redis to start automatically at system boot
+systemctl enable redis-server.service
+
+# Zabbix Redis monitoring template documentation:
+# https://github.com/zabbix/zabbix/blob/master/templates/db/redis/README.md

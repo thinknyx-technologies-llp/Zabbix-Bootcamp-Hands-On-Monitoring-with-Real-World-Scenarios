@@ -1,0 +1,5 @@
+# Update the package lists
+apt-get update
+
+# Install PostgreSQL additional utilities and the Zabbix Agent 2 PostgreSQL monitoring plugin
+apt-get install -y postgresql-contrib zabbix-agent2-plugin-postgresql
