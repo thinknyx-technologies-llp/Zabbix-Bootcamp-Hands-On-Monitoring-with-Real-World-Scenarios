@@ -1,0 +1,53 @@
+```bash
+# Move to the home directory
+cd ~
+
+# Clone the Participate Service repository, including its submodules
+git clone https://github.com/luckydraw-app/participate-svc.git --recurse-submodules
+
+# Move into the Participate Service directory
+cd participate-svc
+
+# List the contents of the shared directory
+ll shared/
+
+# Move into the shared directory
+cd shared
+
+# Pull the latest changes from the main branch of the shared repository
+git pull origin main
+
+# Return to the Participate Service directory
+cd ..
+
+# Display the Participate Service application code
+cat app.py
+
+# Install the Python dependencies required by the application
+pip3 install -r requirements.txt
+
+# Start the Participate Service in the background on port 5001
+# Redirect standard output and errors to app.log
+# Detach standard input from the terminal
+nohup python3 app.py --port 5001 > app.log 2>&1 < /dev/null &
+
+# Display the application log
+cat app.log
+
+# Set the Participate Service URL as an environment variable
+export PARTICIPATE_SERVICE_URL=http://127.0.0.1:5001
+
+# Monitor the UI application's nohup output
+tail -f ../ui/nohup.out
+
+# Check the status of the Redis server
+systemctl status redis-server.service
+
+# Open the hosts file to configure hostname resolution
+vi /etc/hosts
+
+# Map the hostname redis to the local machine
+127.0.0.1 localhost redis
+
+# Terminate the existing Participate Service process and restart it
+```

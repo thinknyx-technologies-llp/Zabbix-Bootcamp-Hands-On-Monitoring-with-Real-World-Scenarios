@@ -1,0 +1,42 @@
+# Move to the home directory
+cd ~
+
+# Clone the Auth Service repository, including its submodules
+git clone https://github.com/luckydraw-app/auth-svc.git --recurse-submodules
+
+# Move into the Auth Service directory
+cd auth-svc/
+
+# Create a Python virtual environment
+python3 -m venv venv
+
+# Activate the virtual environment
+source venv/bin/activate
+
+# Install the Python dependencies required by the Auth Service
+pip3 install -r requirements.txt
+
+# Start the Auth Service in the background on port 5003
+# Redirect standard output and errors to app.log
+# Detach standard input from the terminal
+nohup python3 app.py --port 5003 > app.log 2>&1 < /dev/null &
+
+# Check the running Python processes
+ps -ef | grep -i python3
+
+# Move to the UI application directory
+cd ../ui/
+
+# Set the Auth Service URL for the UI application
+export AUTH_SERVICE_URL=http://127.0.0.1:5003
+
+# Find and forcefully terminate Python processes associated with port 5000
+kill -9 `ps -ef | grep -i python3 | grep -i 5000 | awk '{print $2}'`
+
+# Start the UI application in the background on port 5000
+# Redirect standard output and errors to app.log
+# Detach standard input from the terminal
+nohup python3 app.py --port 5000 > app.log 2>&1 < /dev/null &
+
+# Display the UI application log
+cat app.log

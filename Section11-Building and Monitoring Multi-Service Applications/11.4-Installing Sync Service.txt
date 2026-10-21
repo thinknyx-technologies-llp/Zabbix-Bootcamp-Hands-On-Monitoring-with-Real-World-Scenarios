@@ -1,0 +1,48 @@
+# Clone the Sync Service repository, including its submodules
+git clone https://github.com/luckydraw-app/sync-svc.git --recurse-submodules
+
+# Navigate to the shared database directory
+cd sync-svc/shared/database
+
+# Display the PostgreSQL database configuration
+cat postgres.py
+
+# Set the PostgreSQL connection details as environment variables
+export POSTGRES_HOST=localhost
+export POSTGRES_PORT=5432
+export POSTGRES_DB=luckydraw
+export POSTGRES_USER=luckydraw
+export POSTGRES_PASSWORD=luckydraw
+
+# Display the Redis client configuration
+cat redis_client.py
+
+# Return to the Sync Service root directory
+cd ..
+cd ..
+
+# Install the Python dependencies required by the Sync Service
+pip3 install -r requirements.txt
+
+# Start the Sync Service in the background on port 5002
+# Redirect standard output and errors to app.log
+# Detach standard input from the terminal
+nohup python3 app.py --port 5002 > app.log 2>&1 < /dev/null &
+
+# Display the application log
+cat app.log
+
+# Find and forcefully terminate Python processes associated with port 500
+kill -9 `ps -ef | grep -i python3 | grep -i 500 | awk '{print $2}'`
+
+# Restart the Sync Service in the background on port 5002
+nohup python3 app.py --port 5002 > app.log 2>&1 < /dev/null &
+
+# Connect to the luckydraw PostgreSQL database
+psql -h localhost -U luckydraw --dbname luckydraw
+
+# List the tables in the current database
+\dt
+
+# Display all records from the participants table
+select * from participants;

@@ -1,0 +1,24 @@
+# Check the status of the PostgreSQL service
+systemctl status postgresql
+
+# Open the PostgreSQL command-line interface as the postgres user
+sudo -u postgres psql
+
+# Create the luckydraw database user and set its password
+create user luckydraw with password 'luckydraw';
+
+# Create the luckydraw database and assign ownership to the luckydraw user
+create database luckydraw owner luckydraw;
+
+# List all databases
+\l
+
+# Exit the PostgreSQL command-line interface
+exit
+
+# Connect to the luckydraw database using the luckydraw user
+# Enter the configured password when prompted
+psql -h localhost -U luckydraw --dbname luckydraw
+
+# Exit the PostgreSQL command-line interface
+\q
