@@ -1,0 +1,48 @@
+# Clone the Lucky Draw UI repository into the ui directory
+git clone https://github.com/luckydraw-app/UI.git ui/
+
+# Move into the UI directory
+cd ui/
+
+# List the files and directories
+l
+
+# Display the UI application source code
+cat app.py
+
+# Update the package lists
+sudo apt update
+
+# Install the Python 3.12 virtual environment package
+sudo apt install -y python3.12-venv
+
+# Create a Python 3.12 virtual environment in the home directory
+python3.12 -m venv ~/python312-test
+
+# Activate the Python 3.12 virtual environment
+source ~/python312-test/bin/activate
+
+# Verify the Python version
+python --version
+
+# Install the requests library
+pip install requests
+
+# Install or upgrade pip for Python 3.12
+python3.12 -m ensurepip --upgrade
+
+# Check the pip version associated with Python 3.12
+python3.12 -m pip --version
+
+# Find the location of the pip3 executable
+which pip3
+
+# Install the Python dependencies listed in requirements.txt
+pip3 install -r requirements.txt
+
+# Start the UI application in the background
+# Redirect output to nohup.out by default
+nohup python3 app.py &
+
+# Display the application output
+cat nohup.out
