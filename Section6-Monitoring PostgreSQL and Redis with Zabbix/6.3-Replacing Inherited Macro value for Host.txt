@@ -1,0 +1,39 @@
+# Switch to the PostgreSQL administrative user and open the PostgreSQL shell
+sudo -u postgres psql
+
+# Create the Zabbix monitoring user and set its password
+create user zbx_monitor with password 'zabbix' inherit;
+
+# Grant the PostgreSQL monitoring role to the Zabbix monitoring user
+grant pg_monitor to zbx_monitor;
+
+# Display PostgreSQL user information
+select * from pg_catalog.pg_user;
+
+# Exit the PostgreSQL shell
+\q
+
+# Open the PostgreSQL client authentication configuration file
+vi /etc/postgresql/14/main/pg_hba.conf
+
+# Add the following entries to configure authentication for the Zabbix monitoring user
+# TYPE  DATABASE  USER          ADDRESS       METHOD
+# Allow local TCP connections from localhost without password authentication
+host    all       zbx_monitor   localhost     trust
+
+# Allow IPv4 loopback connections using MD5 password authentication
+host    all       zbx_monitor   127.0.0.1/32  md5
+
+# Allow IPv6 loopback connections using SCRAM-SHA-256 password authentication
+host    all       zbx_monitor   ::1/128       scram-sha-256
+
+# Restart PostgreSQL to apply the configuration changes
+systemctl restart postgresql
+
+# Check the status of the PostgreSQL service
+systemctl status postgresql
+
+
+# On the Zabbix host, connect to PostgreSQL using the monitoring user
+# Enter the password when prompted
+psql -h localhost -U zbx_monitor --dbname postgres
